@@ -13,11 +13,11 @@ namespace hxphidgetrfid
     };
 
     void DispatchEventToHaxe(const char* eventClassSpec, ...);
-	void DispatchEventToHaxeInstance(int eventDispatcherId, const char* eventClassSpec, ...);
+	void DispatchEventToHaxeInstance( const char* eventClassSpec, ...);
     
     AutoGCRoot* GetHaxeCallbackForDispatchingEvents();
     void SetHaxeCallbackForDispatchingEvents(AutoGCRoot* haxeCallback);
-	void InvokeHaxeCallbackFunctionForDispatchingEvents(int eventDispatcherId, const char* eventClassSpec, va_list params);
+	void InvokeHaxeCallbackFunctionForDispatchingEvents(const char* eventClassSpec, va_list params);
 
     void initialize();
     void shutdown();
