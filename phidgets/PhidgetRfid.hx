@@ -100,7 +100,8 @@ class PhidgetRfid extends EventDispatcher {
 		}
 
 		if (instance != null) {
-			instance.dispatchEvent(event);
+			haxe.Timer.delay( ()-> instance.dispatchEvent(event), 2);
+			
 		}
 	}
 

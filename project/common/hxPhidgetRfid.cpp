@@ -25,7 +25,7 @@ struct AutoHaxe
 	}
 	~AutoHaxe()
 	{
-		printf("removing AutoHaxe %d\n",base);
+		//printf("removing AutoHaxe %d\n",base);
 		gc_set_top_of_stack(0,true);
 	}
 };
