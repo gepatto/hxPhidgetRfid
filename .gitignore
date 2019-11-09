@@ -1,2 +1,5 @@
-example/Export
 .vscode
+hxphidgetrfid.code-workspace
+example/Export
+ndll/*
+project/obj

@@ -3,7 +3,6 @@ import openfl.events.Event;
 
 class RfidEvent extends Event
 {
-    public static inline var LIB_INIT       = "rfid_event_initialized";
     public static inline var DEVICE_ATTACH  = "rfid_event_device_attach";
     public static inline var DEVICE_DETACH  = "rfid_event_device_detach";
 

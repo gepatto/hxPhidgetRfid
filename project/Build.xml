@@ -10,7 +10,7 @@
 		
 		<compilerflag value="-Iinclude" />
 		
-		<file name="common/phExternalInterface.cpp"/>
+		<file name="common/ExternalInterface.cpp"/>
 		<file name="common/hxPhidgetRfid.cpp"/>
 		
 	</files>

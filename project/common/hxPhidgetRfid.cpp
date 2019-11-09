@@ -12,7 +12,6 @@
 #endif
 #include "hxPhidgetRfid.h"
 
-static AutoGCRoot* g_haxeCallbackForDispatchingEvents = NULL;
 
 struct AutoHaxe
 {
@@ -26,12 +25,15 @@ struct AutoHaxe
 	}
 	~AutoHaxe()
 	{
+		printf("removing AutoHaxe %d\n",base);
 		gc_set_top_of_stack(0,true);
 	}
 };
 
 namespace hxphidgetrfid {
-	
+
+	static AutoGCRoot* g_haxeCallbackForDispatchingEvents = NULL;
+
 	//Declare an RFID handle
 	CPhidgetRFIDHandle rfid = 0;
 
@@ -40,6 +42,9 @@ namespace hxphidgetrfid {
         return g_haxeCallbackForDispatchingEvents;
     }
 
+	/**
+	 * 
+	 */
     void SetHaxeCallbackForDispatchingEvents(AutoGCRoot* haxeCallback)
     {
         if (g_haxeCallbackForDispatchingEvents)
@@ -50,7 +55,10 @@ namespace hxphidgetrfid {
         g_haxeCallbackForDispatchingEvents = haxeCallback;
     }
 
-	void InvokeHaxeCallbackFunctionForDispatchingEvents(int eventDispatcherId, const char* eventClassSpec, va_list params)
+	/**
+	 * 
+	 */
+	void InvokeHaxeCallbackFunctionForDispatchingEvents(const char* eventClassSpec, va_list params)
 	{
 		bool foundAllArgs = false;
 		value ar = alloc_array(0);
@@ -85,8 +93,7 @@ namespace hxphidgetrfid {
 		AutoGCRoot* haxeCallback = GetHaxeCallbackForDispatchingEvents();
 		if (haxeCallback != NULL)
 		{
-
-			val_call3(haxeCallback->get(), alloc_int(eventDispatcherId), alloc_string(eventClassSpec), ar);
+			val_call2(haxeCallback->get(), alloc_string(eventClassSpec), ar);
 		}
 	}
 	
@@ -95,33 +102,25 @@ namespace hxphidgetrfid {
 	*/
 	void DispatchEventToHaxe(const char* eventClassSpec, ...)
 	{
+		::AutoHaxe haxe("DispatchEventToHaxe");
         va_list params;
         va_start(params, eventClassSpec);
-		::AutoHaxe haxe("Invoke");
-		InvokeHaxeCallbackFunctionForDispatchingEvents(0, eventClassSpec, params);
-		
+		InvokeHaxeCallbackFunctionForDispatchingEvents( eventClassSpec, params);
 		va_end(params);
 	}
 	
 	/**
-	*
-	*/
-	void DispatchEventToHaxeInstance(int eventDispatcherId, const char* eventClassSpec, ...)
-	{
-        va_list params;
-        va_start(params, eventClassSpec);
-		
-		InvokeHaxeCallbackFunctionForDispatchingEvents(eventDispatcherId, eventClassSpec, params);
-		
-		va_end(params);
-	}
-
+	 * 
+	 */ 
 	void setLedState(int state){
 		if (rfid!=NULL){
-			CPhidgetRFID_setAntennaOn(rfid, state);
+			CPhidgetRFID_getLEDOn(rfid, &state);
 		}
 	}
 
+	/**
+	 *
+	 */
 	int CCONV AttachHandler(CPhidgetHandle RFID, void *userptr)
 	{
 		int serialNo;
@@ -140,6 +139,9 @@ namespace hxphidgetrfid {
 		return 0;
 	}
 
+	/**
+	 *
+	 */
 	int CCONV DetachHandler(CPhidgetHandle RFID, void *userptr)
 	{
 		int serialNo;
@@ -158,12 +160,18 @@ namespace hxphidgetrfid {
 		return 0;
 	}
 
+	/**
+	 *
+	 */
 	int CCONV ErrorHandler(CPhidgetHandle RFID, void *userptr, int ErrorCode, const char *unknown)
 	{
 		//printf("Error handled. %d - %s\n", ErrorCode, unknown);
 		return 0;
 	}
 
+	/**
+	 *
+	 */
 	int CCONV OutputChangeHandler(CPhidgetRFIDHandle RFID, void *usrptr, int Index, int State)
 	{
 		if(Index == 0 || Index == 1)
@@ -173,28 +181,38 @@ namespace hxphidgetrfid {
 		return 0;
 	}
 
+	/**
+	 *
+	 */
 	int CCONV TagHandler(CPhidgetRFIDHandle RFID, void *usrptr, char *TagVal, CPhidgetRFID_Protocol proto)
 	{
 		//turn on the Onboard LED
 		CPhidgetRFID_setLEDOn(RFID, 1);
 
+		//printf("TagFound: %s\n", TagVal);
 		DispatchEventToHaxe( "phidgets.event.RfidDataEvent", hxphidgetrfid::CSTRING,  "rfid_data_event_tag_found",	hxphidgetrfid::CSTRING,  TagVal,  hxphidgetrfid::CEND); 
 
 		return 0;
 	}
 
+	/**
+	 *
+	 */
 	int CCONV TagLostHandler(CPhidgetRFIDHandle RFID, void *usrptr, char *TagVal, CPhidgetRFID_Protocol proto)
 	{
 		//turn off the Onboard LED
 		CPhidgetRFID_setLEDOn(RFID, 0);
-
+		//printf("TagLost:  %s \n", TagVal);
 		DispatchEventToHaxe( "phidgets.event.RfidDataEvent", CSTRING,  "rfid_data_event_tag_lost",	hxphidgetrfid::CSTRING,  TagVal,  hxphidgetrfid::CEND); 
 		
 		return 0;
 	}
 
-	//Display the properties of the attached phidget to the screen.  We will be displaying the name, serial number and version of the attached device.
-	//We will also display the nu,mber of available digital outputs
+	/**
+	 * Display the properties of the attached phidget to the screen.  
+	 * We will be displaying the name, serial number and version of the attached device.
+	 * We will also display the nu,mber of available digital outputs
+	 */
 	int display_properties(CPhidgetRFIDHandle phid)
 	{
 		int serialNo, version, numOutputs, antennaOn, LEDOn;
@@ -218,8 +236,8 @@ namespace hxphidgetrfid {
 	}
 
 	/**
-	*
-	*/
+	 *
+	 */
 	void shutdown()
 	{
 		CPhidget_close((CPhidgetHandle)rfid);
@@ -228,8 +246,8 @@ namespace hxphidgetrfid {
 	}
 	
 	/**
-	*
-	*/
+	 *
+	 */
 	void initialize()
 	{
 		int result;
