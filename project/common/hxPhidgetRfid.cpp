@@ -173,7 +173,7 @@ namespace hxphidgetrfid {
 	 */
 	int CCONV ErrorHandler(CPhidgetHandle RFID, void *userptr, int ErrorCode, const char *unknown)
 	{
-		//printf("Error handled. %d - %s\n", ErrorCode, unknown);
+		printf("Error handled. %d - %s\n", ErrorCode, unknown);
 		return 0;
 	}
 
@@ -196,8 +196,6 @@ namespace hxphidgetrfid {
 	{
 		//turn on the Onboard LED
 		CPhidgetRFID_setLEDOn(RFID, 1);
-
-		//printf("TagFound: %s\n", TagVal);
 		DispatchEventToHaxe( "phidgets.event.RfidDataEvent", hxphidgetrfid::CSTRING,  "rfid_data_event_tag_found",	hxphidgetrfid::CSTRING,  TagVal,  hxphidgetrfid::CEND); 
 
 		return 0;
@@ -210,7 +208,6 @@ namespace hxphidgetrfid {
 	{
 		//turn off the Onboard LED
 		CPhidgetRFID_setLEDOn(RFID, 0);
-		//printf("TagLost:  %s \n", TagVal);
 		DispatchEventToHaxe( "phidgets.event.RfidDataEvent", CSTRING,  "rfid_data_event_tag_lost",	hxphidgetrfid::CSTRING,  TagVal,  hxphidgetrfid::CEND); 
 		
 		return 0;
