@@ -112,9 +112,17 @@ namespace hxphidgetrfid {
 	/**
 	 * 
 	 */ 
+	void setOutputState(int output, int state){
+		if (rfid!=NULL){
+			CPhidgetRFID_setOutputState(rfid, output, state);
+		}
+	}
+	/**
+	 * 
+	 */ 
 	void setLedState(int state){
 		if (rfid!=NULL){
-			CPhidgetRFID_getLEDOn(rfid, &state);
+			CPhidgetRFID_setLEDOn(rfid, state);
 		}
 	}
 

@@ -46,6 +46,14 @@ DEFINE_PRIM(hxphidgetrfid_shutdown, 0);
 /**
 *
 */
+static void hxphidgetrfid_setOutputState(value output, value state)
+{
+   hxphidgetrfid::setOutputState(val_int(output), val_int(state) );
+}
+DEFINE_PRIM(hxphidgetrfid_setOutputState, 2);
+/**
+*
+*/
 static void hxphidgetrfid_setLedState(value state)
 {
    hxphidgetrfid::setLedState(val_int(state) );

@@ -40,10 +40,22 @@ class PhidgetRfid extends EventDispatcher {
 
 	/**
 	 * [Description]
+	 * Toggles Output n on (1) or Off (1) 
+	 * @param state 
+	 */
+	public function setOutput(output:Int, state:Int):Void {
+		if (!s_initialized)
+			return;
+		hxphidgetrfid_setOutputState(output,state);
+	}
+
+	private static var hxphidgetrfid_setOutputState = Lib.load("hxphidgetrfid", "hxphidgetrfid_setOutputState", 2);
+	/**
+	 * [Description]
 	 * Toggles Led on (1) or Off (1) 
 	 * @param state 
 	 */
-	public static function setLed(state:Int):Void {
+	public function setLed(state:Int):Void {
 		if (!s_initialized)
 			return;
 		hxphidgetrfid_setLedState(state);

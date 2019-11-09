@@ -21,7 +21,8 @@ namespace hxphidgetrfid
 
     void initialize();
     void shutdown();
-    void setLedState(int State);
+    void setLedState(int state);
+    void setOutputState(int output, int state);
 }
 
 #endif
