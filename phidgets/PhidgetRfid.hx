@@ -41,6 +41,7 @@ class PhidgetRfid extends EventDispatcher {
 	/**
 	 * [Description]
 	 * Toggles Digital Output n on (1) or Off (0)
+	 * @param output
 	 * @param state
 	 */
 	public function setOutput(output:Int, state:Int):Void {
@@ -100,8 +101,8 @@ class PhidgetRfid extends EventDispatcher {
 		}
 
 		if (instance != null) {
+			// force event to be dispatched from the MainLoop;
 			haxe.Timer.delay( ()-> instance.dispatchEvent(event), 2);
-			
 		}
 	}
 

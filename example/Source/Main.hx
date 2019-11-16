@@ -8,16 +8,20 @@ import phidgets.event.RfidDataEvent;
 
 class Main extends Sprite {
 
+	private var rfidReader:PhidgetRfid;
+
 	public function new () {
 		
 		super ();
 
-		PhidgetRfid.initialize();
+		// Get PhidgetRfid singleton Instance
+		rfidReader = PhidgetRfid.initialize();
+		rfidReader.setLed(1);
 
-		stage.addEventListener(RfidEvent.DEVICE_ATTACH, handleDeviceFound);
-		stage.addEventListener(RfidEvent.DEVICE_DETACH, handleDeviceLost);
-		stage.addEventListener(RfidDataEvent.TAG_FOUD, handleTagFound);
-		stage.addEventListener(RfidDataEvent.TAG_LOST, handleTagLost);
+		rfidReader.addEventListener(RfidEvent.DEVICE_ATTACH, handleDeviceFound);
+		rfidReader.addEventListener(RfidEvent.DEVICE_DETACH, handleDeviceLost);
+		rfidReader.addEventListener(RfidDataEvent.TAG_FOUD, handleTagFound);
+		rfidReader.addEventListener(RfidDataEvent.TAG_LOST, handleTagLost);
 	
 	}
 

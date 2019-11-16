@@ -4,7 +4,7 @@
   "license": "MIT",
   "tags": ["Phidgets","RFID"],
   "description": "An openFL extension to read from a Phidget21 USB Rfid Reader",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "releasenote": "adds support for windows and mac. Read the ReadMe",
   "contributors": ["patrick@gepatto.nl"],
   "dependencies": {}

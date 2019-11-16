@@ -12,7 +12,7 @@ On Win tested on Windows10 version 1903
 
 ![Phidgets 1024](https://www.phidgets.com/images/1024_0_Web.jpg)
 
-v 0.2.0
+v 0.3.0
 -
 **Requirements**
 
@@ -56,8 +56,4 @@ or
 --
 
 ###Known limitations###
-
-version 0.2 only handles 1 device.
-future versions will be able to handle multiple Rfid Devices
-
-The library sends events from the stage ( probably not the best way )
+version 0.3 only handles 1 device.
